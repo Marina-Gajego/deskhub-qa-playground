@@ -1,0 +1,12 @@
+{
+  "name": "deskhub-cypress-tests",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "open": "cypress open",
+    "run": "cypress run"
+  },
+  "devDependencies": {
+    "cypress": "^14.5.4"
+  }
+}
