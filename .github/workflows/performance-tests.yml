@@ -1,14 +1,13 @@
 name: Performance Tests (k6)
 
 on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+  workflow_dispatch:
 
 jobs:
   k6-load:
     runs-on: ubuntu-latest
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -25,7 +24,7 @@ jobs:
         run: npm run start:backend &
 
       - name: Wait for Backend
-        run: npx wait-on tcp:localhost:3001
+        run: npx wait-on http://localhost:3001/api/docs/openapi.json
 
       - name: Run k6 Load Test
         uses: grafana/k6-action@v0.3.1

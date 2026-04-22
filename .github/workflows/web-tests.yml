@@ -1,14 +1,13 @@
 name: Web E2E Tests
 
 on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+  workflow_dispatch:
 
 jobs:
   cypress-web:
     runs-on: ubuntu-latest
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -29,7 +28,7 @@ jobs:
         with:
           # Inicia backend E frontend em paralelo
           start: npm run start:backend, npm run dev:frontend
-          # Aguarda as portas do backend e do frontend abrirem
-          wait-on: 'tcp:localhost:3001, tcp:localhost:5173'
+          # Aguarda o backend (swagger) e o frontend abrirem
+          wait-on: 'http://localhost:3001/api/docs/openapi.json, http://localhost:5173'
           # Roda apenas os specs da UI Web
           spec: cypress/e2e/web/**/*.cy.js

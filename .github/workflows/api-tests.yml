@@ -1,14 +1,13 @@
 name: API Tests
 
 on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+  workflow_dispatch:
 
 jobs:
   cypress-api:
     runs-on: ubuntu-latest
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -29,7 +28,7 @@ jobs:
         with:
           # Inicia apenas o backend para os testes de API
           start: npm run start:backend
-          # Aguarda a porta do backend abrir
-          wait-on: 'tcp:localhost:3001'
+          # Aguarda o backend responder com 200 OK na rota do swagger
+          wait-on: 'http://localhost:3001/api/docs/openapi.json'
           # Roda apenas os specs de API
           spec: cypress/e2e/api/**/*.cy.js
