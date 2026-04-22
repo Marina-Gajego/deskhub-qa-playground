@@ -11,7 +11,7 @@ O DeskHub simula um sistema corporativo de reserva de mesas com:
 - criacao de reservas com regras de negocio no back-end;
 - consulta e cancelamento das reservas do usuario autenticado;
 - documentacao Swagger/OpenAPI para apoio a testes;
-- estrutura inicial para automacao com Cypress e k6.
+- estrutura para automacao com Cypress e k6.
 
 ## Objetivo do Repositorio
 
@@ -213,7 +213,7 @@ k6 run k6/scenarios/api/load_test.js
 - requisitos: [docs/REQUISITOS.md](docs/REQUISITOS.md)
 - wiki do projeto: Casos de teste detalhados na pasta `docs/wiki/` (API, Web e Performance)
 
-## O Que Foi Implementado com Sucesso ✅
+## O Que Foi Implementado
 
 - [x] Testes Cypress Web (E2E)
 - [x] Testes Cypress API (Negative Testing, Boundary Values)
