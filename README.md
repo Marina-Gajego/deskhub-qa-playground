@@ -1,175 +1,196 @@
-# DeskHub
+# DeskHub QA Playground
 
-Aplicacao web full stack para reserva de mesas em escritorio, com back-end em Express, front-end em React e persistencia em memoria.
+Aplicacao web full stack para reserva de mesas em escritorios, desenvolvida como base de estudos para QA manual, QA automatizado, automacao funcional e testes de performance.
 
-## QA Context
+## Visao Geral
 
-Este projeto foi desenvolvido com foco em testabilidade para estudos de QA manual, QA automatizado e automacao funcional de ponta a ponta.
+O DeskHub simula um sistema corporativo de reserva de mesas com:
 
-O sistema contem bugs logicos intencionais, documentados no codigo e neste README, para permitir cenarios controlados de validacao, escrita de casos de teste, automacao de regressao e demonstracao de defeitos.
+- cadastro e login de colaboradores;
+- visualizacao de mesas por data;
+- criacao de reservas com regras de negocio no back-end;
+- consulta e cancelamento das reservas do usuario autenticado;
+- documentacao Swagger/OpenAPI para apoio a testes;
+- estrutura inicial para automacao com Cypress e k6.
 
-As decisoes de arquitetura priorizam repetibilidade do ambiente de testes:
+## Objetivo do Repositorio
 
-- os dados ficam apenas em memoria para que o estado seja resetado rapidamente ao reiniciar a API;
-- algumas validacoes foram omitidas de forma intencional para apoiar treinamentos de identificacao de falhas;
-- o comportamento simples da aplicacao facilita a criacao de suites com Cypress, Playwright, Postman, Supertest ou ferramentas semelhantes.
+Este repositorio foi montado para servir como ambiente pratico de estudos em:
 
-## Estrutura
+- levantamento de cenarios de teste;
+- escrita de casos de teste;
+- automacao web;
+- automacao de API;
+- testes de carga e performance;
+- exploracao de bugs logicos intencionais.
 
-- `backend/`: API Node.js + Express
-- `frontend/`: interface React com Vite
-- `backend/src/openapi.js`: especificacao Swagger/OpenAPI da API
-- `tests/cypress/`: estrutura base para automacao com Cypress
-- `tests/k6/`: estrutura base para testes de performance da API com k6
+## Stack Tecnica
 
-## Regras implementadas no backend
+### Aplicacao
 
-- `RN01`: bloqueio de conflito de agenda por mesa, data e horario
-- `RN02`: reservas apenas entre `08:00` e `18:00`
-- `RN03`: limite maximo de `9 horas` por reserva
-- `RN04`: visualizacao de mesas apenas para usuarios autenticados
+- `Node.js`
+- `Express`
+- `React`
+- `Vite`
+- `JWT`
+- persistencia em memoria
+
+### Qualidade e Testes
+
+- `Swagger / OpenAPI`
+- `Cypress` para testes web e de API
+- `k6` para performance da API
+
+## Estrutura do Projeto
+
+```text
+deskhub-qa-playground/
+├── backend/
+├── frontend/
+├── tests/
+│   ├── cypress/
+│   └── k6/
+├── docs/
+└── README.md
+```
+
+### Pastas principais
+
+- `backend/`: API em Node.js com Express
+- `frontend/`: interface web em React
+- `tests/cypress/`: base da automacao funcional web e de API
+- `tests/k6/`: base de testes de performance da API
+- `docs/`: documentacao de apoio ao projeto
+
+## Funcionalidades Implementadas
+
+- cadastro de usuario
+- login com autenticacao JWT
+- visualizacao de mesas por data
+- criacao de reservas
+- listagem das reservas do proprio usuario
+- cancelamento de reservas do proprio usuario
+- documentacao Swagger/OpenAPI
+
+## Regras de Negocio Atuais
+
+- `RN01`: a mesma mesa nao pode ser reservada por duas pessoas no mesmo horario e data
+- `RN02`: reservas sao aceitas apenas entre `08:00` e `18:00`
+- `RN03`: o limite maximo de uma reserva e `9 horas`
+- `RN04`: apenas usuarios autenticados podem visualizar mesas
 - `RN06`: cada colaborador pode ter no maximo `2 reservas` por dia
-- `RN07`: para reservas feitas no dia atual, o horario inicial deve respeitar pelo menos `1 hora de antecedencia`
+- `RN07`: reservas feitas para o mesmo dia exigem pelo menos `1 hora` de antecedencia
 
-## Bugs propositais incluidos
+## Contexto de QA
 
-- Data: reservas em datas passadas continuam sendo aceitas
-- Cadastro: o e-mail aceita qualquer texto, sem validacao de formato
-- Sobreposicao: conflitos com sobreposicao de exatamente `1 minuto` passam
-- Nome: o cadastro aceita nomes compostos apenas por espacos em branco
-- Limite diario: quando o usuario ja possui exatamente `2 reservas` no dia, o sistema ainda aceita mais uma
-- Antecedencia: para reservas no mesmo dia, a validacao considera apenas a hora atual e ignora os minutos
+Este sistema contem bugs logicos intencionais para fins de treinamento.
+
+Eles existem para apoiar:
+
+- testes exploratorios;
+- escrita de evidencias;
+- criacao de cenarios automatizados;
+- validacao de regressao;
+- demonstracoes praticas de defeitos.
+
+### Bugs propositais atualmente presentes
+
+- aceita reservas em datas passadas
+- aceita qualquer texto como e-mail
+- permite sobreposicao quando o conflito for de exatamente `1 minuto`
+- aceita nome composto apenas por espacos em branco
+- falha no limite diario quando o usuario ja possui exatamente `2 reservas`
+- a antecedencia minima ignora os minutos da hora atual
 
 ## Disclaimer
 
-O uso de persistencia em memoria e a ausencia de algumas validacoes especificas sao escolhas deliberadas para simplificar o ciclo de testes.
+Algumas decisoes deste projeto sao deliberadas para facilitar o uso em estudos:
 
-Objetivo dessas decisoes:
+- persistencia em memoria para reset rapido da massa de dados;
+- ausencia de validacoes especificas para apoiar cenarios de falha;
+- simplicidade arquitetural para reduzir atrito na automacao.
 
-- permitir reset rapido da massa de dados ao reiniciar o servidor;
-- evitar dependencias externas como banco de dados;
-- manter cenarios previsiveis para reproducao de bugs e execucao repetida de testes.
+Este repositorio nao representa um sistema pronto para producao.
 
-Este projeto nao representa uma implementacao de producao e deve ser tratado como um ambiente de treinamento e validacao.
+## Como Executar Localmente
 
-## Como rodar
+### 1. Instalar dependencias da aplicacao
 
-### 1. Instalar dependencias
-
-No diretorio raiz:
+Na raiz do projeto:
 
 ```bash
 npm run install:all
 ```
 
-Ou, se preferir, instale separadamente:
-
-```bash
-cd backend
-npm install
-cd ../frontend
-npm install
-```
-
 ### 2. Subir o back-end
 
-Em um terminal:
-
 ```bash
-cd backend
-npm run dev
+npm run dev:backend
 ```
 
-API disponivel em `http://localhost:3001`.
+API:
 
-Documentacao OpenAPI disponivel em `http://localhost:3001/api/docs/openapi.json`.
+- `http://localhost:3001`
+
+Swagger:
+
+- `http://localhost:3001/api/docs`
+- `http://localhost:3001/api/docs/openapi.json`
 
 ### 3. Subir o front-end
 
-Em outro terminal:
-
 ```bash
-cd frontend
-npm run dev
+npm run dev:frontend
 ```
 
-Aplicacao disponivel em `http://localhost:5173`.
+Aplicacao:
 
-## Guia de execucao rapida para QA
+- `http://localhost:5173`
 
-Use este fluxo quando quiser repetir o ciclo de testes do zero:
+## Execucao Rapida para QA
 
-1. Abra um terminal na raiz do projeto.
-2. Instale as dependencias na primeira execucao com `npm run install:all`.
-3. Suba a API com `npm run dev:backend`.
-4. Em outro terminal, suba o front-end com `npm run dev:frontend`.
-5. Acesse `http://localhost:5173`.
-6. Execute seus cenarios de teste.
-7. Para resetar a massa de dados, pare a API e suba novamente.
+Fluxo recomendado para repetir testes do zero:
 
-Como os dados ficam em memoria, reiniciar o processo do back-end limpa usuarios e reservas e devolve o ambiente para um estado previsivel.
+1. instalar dependencias
+2. subir back-end
+3. subir front-end
+4. executar os cenarios
+5. reiniciar a API quando quiser resetar a massa de dados
+
+Como os dados ficam em memoria, reiniciar o back-end limpa usuarios e reservas.
 
 ## Swagger / OpenAPI
 
-Foi adicionada uma especificacao OpenAPI para facilitar testes manuais, colecoes, mocks e automacao.
+O projeto possui especificacao OpenAPI para apoiar:
 
-Onde acessar:
+- testes manuais
+- colecoes de API
+- mocks
+- integracoes
+- automacao
 
-- endpoint JSON: `http://localhost:3001/api/docs/openapi.json`
+Arquivos e acessos:
+
 - arquivo fonte: `backend/src/openapi.js`
+- JSON: `http://localhost:3001/api/docs/openapi.json`
+- interface web: `http://localhost:3001/api/docs`
 
-Voce pode usar esse JSON em ferramentas como:
-
-- Swagger Editor
-- Postman
-- Insomnia
-- geradores de clientes HTTP
-
-## Estrutura de automacao
-
-Foi criada a base do repositorio para testes automatizados, sem implementar cenarios ainda.
+## Estrutura de Automacao
 
 ### Cypress
 
-O Cypress foi separado em dois tipos de cobertura:
+Base preparada para:
 
-- `tests/cypress/cypress/e2e/web/`: testes da interface web
-- `tests/cypress/cypress/e2e/api/`: testes de API usando Cypress
+- `tests/cypress/cypress/e2e/web/`
+- `tests/cypress/cypress/e2e/api/`
 
-Arquivos principais:
-
-- `tests/cypress/package.json`
-- `tests/cypress/cypress.config.js`
-- `tests/cypress/cypress/support/e2e.js`
-- `tests/cypress/cypress/support/commands.js`
-
-### k6
-
-O `k6` foi reservado exclusivamente para testes da API.
-
-Estrutura criada:
-
-- `tests/k6/scenarios/api/`
-- `tests/k6/data/`
-
-## Instalacoes necessarias para automacao
-
-### Cypress
-
-Para instalar as dependencias do Cypress:
+Instalacao:
 
 ```bash
 npm run install:qa
 ```
 
-Ou:
-
-```bash
-cd tests/cypress
-npm install
-```
-
-Comandos preparados:
+Execucao:
 
 ```bash
 npm run cypress:open
@@ -178,45 +199,45 @@ npm run cypress:run
 
 ### k6
 
-O `k6` deve ser instalado globalmente na maquina, pois nao faz parte do `npm` deste projeto.
+Uso reservado para testes de performance da API.
 
-Exemplos de instalacao no Windows:
+Estrutura:
+
+- `tests/k6/scenarios/api/`
+- `tests/k6/data/`
+
+Instalacao do `k6`:
 
 ```bash
 choco install k6
 ```
 
+ou
+
 ```bash
 scoop install k6
 ```
 
-Depois de instalar:
+Validacao:
 
 ```bash
 k6 version
 ```
 
-## O que ainda nao foi implementado
+## Documentacao
 
-Nesta etapa, somente a estrutura foi preparada.
+- requisitos: [docs/REQUISITOS.md](docs/REQUISITOS.md)
+- wiki do projeto: use a wiki do GitHub para documentacao funcional e de QA
 
-Ainda nao existem:
+## O Que Ainda Nao Foi Implementado
 
-- cenarios Cypress para web
-- cenarios Cypress para API
-- scripts k6 de carga, smoke ou stress
-- fixtures de teste
-- comandos customizados de automacao
+- testes Cypress web
+- testes Cypress API
+- scripts k6
+- fixtures reais de automacao
+- comandos customizados de Cypress
+- pipeline CI/CD
 
-## Fluxo de uso
+## Observacao Final
 
-1. Crie uma conta.
-2. Entre na plataforma.
-3. Escolha uma data.
-4. Consulte a disponibilidade das mesas.
-5. Selecione uma mesa e informe horario inicial e final.
-6. Confirme a reserva.
-
-## Observacao
-
-Como os dados ficam em memoria, usuarios, mesas e reservas sao perdidos ao reiniciar o servidor.
+O DeskHub QA Playground foi desenhado para ser simples de entender, facil de resetar e util para praticar qualidade de software em um contexto controlado.

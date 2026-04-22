@@ -150,10 +150,6 @@ const authMiddleware = (req, res, next) => {
   }
 };
 
-app.get('/api/health', (_req, res) => {
-  res.json({ status: 'ok', app: 'DeskHub' });
-});
-
 app.get('/api/docs/openapi.json', (_req, res) => {
   res.json(openApiSpec);
 });

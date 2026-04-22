@@ -14,7 +14,6 @@ export const openApiSpec = {
     },
   ],
   tags: [
-    { name: 'Health', description: 'Verificacao simples da API' },
     { name: 'Auth', description: 'Cadastro e autenticacao de colaboradores' },
     { name: 'Desks', description: 'Consulta de mesas por data' },
     { name: 'Reservations', description: 'Gestao de reservas do usuario autenticado' },
@@ -151,14 +150,6 @@ export const openApiSpec = {
         },
         required: ['deskId', 'date', 'startTime', 'endTime'],
       },
-      HealthResponse: {
-        type: 'object',
-        properties: {
-          status: { type: 'string', example: 'ok' },
-          app: { type: 'string', example: 'DeskHub' },
-        },
-        required: ['status', 'app'],
-      },
       DesksResponse: {
         type: 'object',
         properties: {
@@ -196,24 +187,6 @@ export const openApiSpec = {
     },
   },
   paths: {
-    '/api/health': {
-      get: {
-        tags: ['Health'],
-        summary: 'Verifica se a API esta online',
-        responses: {
-          '200': {
-            description: 'API respondendo normalmente',
-            content: {
-              'application/json': {
-                schema: {
-                  $ref: '#/components/schemas/HealthResponse',
-                },
-              },
-            },
-          },
-        },
-      },
-    },
     '/api/auth/register': {
       post: {
         tags: ['Auth'],
