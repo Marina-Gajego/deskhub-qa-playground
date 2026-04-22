@@ -9,7 +9,6 @@ O uso de `k6` neste projeto sera dedicado somente a cenarios de API.
 ## Estrutura
 
 - `scenarios/api/`: scripts de carga, stress ou smoke da API
-- `data/`: arquivos auxiliares usados pelos cenarios
 
 ## Instalacao
 

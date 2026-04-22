@@ -1,0 +1,33 @@
+name: Performance Tests (k6)
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  k6-load:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Install Backend Dependencies
+        run: npm install --prefix backend
+
+      - name: Start Backend
+        run: npm run start:backend &
+
+      - name: Wait for Backend
+        run: npx wait-on tcp:localhost:3001
+
+      - name: Run k6 Load Test
+        uses: grafana/k6-action@v0.3.1
+        with:
+          filename: k6/scenarios/api/load_test.js

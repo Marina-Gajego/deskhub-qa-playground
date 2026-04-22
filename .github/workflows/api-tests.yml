@@ -1,0 +1,35 @@
+name: API Tests
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  cypress-api:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Install Root Dependencies
+        run: npm install
+
+      - name: Install Project Dependencies
+        run: npm run install:all
+
+      - name: Run API Tests
+        uses: cypress-io/github-action@v6
+        with:
+          # Inicia apenas o backend para os testes de API
+          start: npm run start:backend
+          # Aguarda a porta do backend abrir
+          wait-on: 'tcp:localhost:3001'
+          # Roda apenas os specs de API
+          spec: cypress/e2e/api/**/*.cy.js

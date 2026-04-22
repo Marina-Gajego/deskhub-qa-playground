@@ -45,11 +45,12 @@ Este repositorio foi montado para servir como ambiente pratico de estudos em:
 
 ```text
 deskhub-qa-playground/
+├── .github/
+│   └── workflows/
 ├── backend/
 ├── frontend/
-├── tests/
-│   ├── cypress/
-│   └── k6/
+├── cypress/
+├── k6/
 ├── docs/
 └── README.md
 ```
@@ -58,9 +59,10 @@ deskhub-qa-playground/
 
 - `backend/`: API em Node.js com Express
 - `frontend/`: interface web em React
-- `tests/cypress/`: base da automacao funcional web e de API
-- `tests/k6/`: base de testes de performance da API
-- `docs/`: documentacao de apoio ao projeto
+- `cypress/`: automacao funcional web e de API
+- `k6/`: testes de performance da API
+- `.github/workflows/`: pipelines de CI/CD para GitHub Actions
+- `docs/`: documentacao de apoio ao projeto, wiki e casos de teste
 
 ## Funcionalidades Implementadas
 
@@ -119,6 +121,7 @@ Este repositorio nao representa um sistema pronto para producao.
 Na raiz do projeto:
 
 ```bash
+npm install
 npm run install:all
 ```
 
@@ -179,16 +182,11 @@ Arquivos e acessos:
 
 ### Cypress
 
-Base preparada para:
+Testes E2E (Web) e de Integracao (API) totalmente configurados na raiz:
 
-- `tests/cypress/cypress/e2e/web/`
-- `tests/cypress/cypress/e2e/api/`
-
-Instalacao:
-
-```bash
-npm run install:qa
-```
+- `cypress/e2e/web/`: Testes de Interface
+- `cypress/e2e/api/`: Testes de Contrato e Regras de Negocio
+- `cypress/support/commands.js`: Comandos customizados (ex: `cy.guiLogin`, `cy.apiRegister`)
 
 Execucao:
 
@@ -199,44 +197,30 @@ npm run cypress:run
 
 ### k6
 
-Uso reservado para testes de performance da API.
+Testes de performance de API.
 
 Estrutura:
 
-- `tests/k6/scenarios/api/`
-- `tests/k6/data/`
+- `k6/scenarios/api/`
 
-Instalacao do `k6`:
-
+Execucao do script principal:
 ```bash
-choco install k6
-```
-
-ou
-
-```bash
-scoop install k6
-```
-
-Validacao:
-
-```bash
-k6 version
+k6 run k6/scenarios/api/load_test.js
 ```
 
 ## Documentacao
 
 - requisitos: [docs/REQUISITOS.md](docs/REQUISITOS.md)
-- wiki do projeto: use a wiki do GitHub para documentacao funcional e de QA
+- wiki do projeto: Casos de teste detalhados na pasta `docs/wiki/` (API, Web e Performance)
 
-## O Que Ainda Nao Foi Implementado
+## O Que Foi Implementado com Sucesso ✅
 
-- testes Cypress web
-- testes Cypress API
-- scripts k6
-- fixtures reais de automacao
-- comandos customizados de Cypress
-- pipeline CI/CD
+- [x] Testes Cypress Web (E2E)
+- [x] Testes Cypress API (Negative Testing, Boundary Values)
+- [x] Scripts k6 (Load Testing e fluxos complexos)
+- [x] Comandos customizados do Cypress
+- [x] Pipeline CI/CD completa no GitHub Actions
+- [x] Padronizacao da estrutura de diretorios na raiz
 
 ## Observacao Final
 

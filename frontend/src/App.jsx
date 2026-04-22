@@ -105,7 +105,6 @@ function App() {
 
       setDesks(desksResponse.desks);
       setMyReservations(reservationsResponse.reservations);
-      setFeedback({ type: '', message: '' });
 
       if (desksResponse.desks.length > 0) {
         setReservationForm((currentForm) => ({
