@@ -57,4 +57,30 @@ describe('E2E Web - Autenticacao', () => {
       cy.get('.hero-panel').should('be.visible');
     });
   });
+
+  it('deve exibir erro ao tentar criar conta com e-mail invalido (BUG CONHECIDO)', function () {
+    if (Cypress.env('SKIP_KNOWN_BUGS')) this.skip();
+
+    cy.get('.auth-tabs button').contains('Criar conta').click();
+    cy.get('input[name="name"]').type('QA Tester');
+    
+    cy.get('input[name="email"]').invoke('removeAttr', 'type').type('email_invalido_sem_arroba');
+    cy.get('input[name="password"]').type('Senha123');
+    cy.get('button[type="submit"]').click();
+
+    cy.get('.feedback.error').should('be.visible').and('contain', 'formato');
+  });
+
+  it('deve exibir erro ao criar conta apenas com espacos no nome (BUG CONHECIDO)', function () {
+    if (Cypress.env('SKIP_KNOWN_BUGS')) this.skip();
+
+    const user = createUniqueUserPayload('web-spaces');
+    cy.get('.auth-tabs button').contains('Criar conta').click();
+    cy.get('input[name="name"]').type('       ');
+    cy.get('input[name="email"]').type(user.email);
+    cy.get('input[name="password"]').type(user.password);
+    cy.get('button[type="submit"]').click();
+
+    cy.get('.feedback.error').should('be.visible');
+  });
 });

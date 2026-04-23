@@ -18,7 +18,6 @@ describe('E2E Web - Dashboard de Mesas e Reservas', () => {
   });
 
   it('deve permitir criar uma nova reserva com sucesso', () => {
-    // Escolhemos uma mesa e data aleatória para evitar conflitos (409) entre execuções
     const randomDeskId = Math.floor(Math.random() * 20) + 1;
     const futureDate = getDateWithOffset(Math.floor(Math.random() * 10) + 5);
     
@@ -49,5 +48,19 @@ describe('E2E Web - Dashboard de Mesas e Reservas', () => {
     cy.get('.reservation-form button[type="submit"]').click();
 
     cy.get('.feedback.error').should('contain', 'Uma reserva nao pode ultrapassar 9 horas de duracao.');
+  });
+
+  it('deve exibir erro ao tentar criar reserva em data passada (BUG CONHECIDO)', function () {
+    if (Cypress.env('SKIP_KNOWN_BUGS')) this.skip();
+
+    const pastDate = getDateWithOffset(-5);
+    
+    cy.get('.reservation-form select[name="deskId"]').select('1');
+    cy.get('.reservation-form input[type="date"]').type(pastDate);
+    cy.get('.reservation-form input[name="startTime"]').type('10:00');
+    cy.get('.reservation-form input[name="endTime"]').type('11:00');
+    cy.get('.reservation-form button[type="submit"]').click();
+
+    cy.get('.feedback.error').should('be.visible');
   });
 });

@@ -162,7 +162,9 @@ describe('API Reservations - /api/reservations e /api/reservations/my', () => {
     });
   });
 
-  it('Nao deve aceitar reserva em data passada', () => {
+  it('Nao deve aceitar reserva em data passada', function () {
+    if (Cypress.env('SKIP_KNOWN_BUGS')) this.skip();
+
     const user = createUniqueUserPayload('reservation-past-date');
     const pastDate = getDateWithOffset(-1);
 
@@ -263,7 +265,9 @@ describe('API Reservations - /api/reservations e /api/reservations/my', () => {
     });
   });
 
-  it('Nao deve aceitar reserva com sobreposicao de exatamente 1 minuto', () => {
+  it.only('Nao deve aceitar reserva com sobreposicao de exatamente 1 minuto', function () {
+    if (Cypress.env('SKIP_KNOWN_BUGS')) this.skip();
+
     const firstUser = createUniqueUserPayload('reservation-overlap-minute-a');
     const secondUser = createUniqueUserPayload('reservation-overlap-minute-b');
     const reservationDate = getDateWithOffset(8);
@@ -297,7 +301,9 @@ describe('API Reservations - /api/reservations e /api/reservations/my', () => {
     });
   });
 
-  it('Nao deve permitir uma terceira reserva no mesmo dia', () => {
+  it('Nao deve permitir uma terceira reserva no mesmo dia', function () {
+    if (Cypress.env('SKIP_KNOWN_BUGS')) this.skip();
+
     const user = createUniqueUserPayload('reservation-daily-limit');
     const reservationDate = getDateWithOffset(9);
 

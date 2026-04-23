@@ -2,7 +2,7 @@ const { defineConfig } = require('cypress');
 
 module.exports = defineConfig({
   e2e: {
-    baseUrl: 'http://localhost:5173',
+    baseUrl: 'http://127.0.0.1:5173',
     specPattern: [
       'cypress/e2e/web/**/*.cy.{js,jsx,ts,tsx}',
       'cypress/e2e/api/**/*.cy.{js,jsx,ts,tsx}',
@@ -12,6 +12,6 @@ module.exports = defineConfig({
     screenshotOnRunFailure: true,
   },
   env: {
-    apiUrl: 'http://localhost:3001',
+    apiUrl: 'http://127.0.0.1:3001',
   },
 });

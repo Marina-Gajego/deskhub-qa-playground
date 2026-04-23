@@ -22,6 +22,8 @@ Os testes estão divididos em três grupos principais para facilitar a manutenç
 | CTW03 | Login com usuário válido | 1. Cadastrar usuário via API.<br>2. Preencher e-mail e senha corretos na tela de login.<br>3. Clicar em Submit. | Redireciona para o Painel de reservas. |
 | CTW04 | Login com credenciais inválidas | 1. Preencher e-mail válido e senha incorreta.<br>2. Clicar em Submit. | Exibe `.feedback.error` com "Credenciais invalidas." |
 | CTW05 | Logout com sucesso | 1. Realizar login.<br>2. Clicar no botão "Sair" na topbar. | O usuário é desconectado e o painel de autenticação volta a ser exibido. |
+| CTW12 | Erro no cadastro com e-mail inválido (*Bug Conhecido*) | 1. Remover formato de email (bypass HTML5).<br>2. Inserir email inválido.<br>3. Enviar. | **Falha Esperada:** Backend aceita formato incorreto (retorna 201). O teste falha pois esperava erro na UI. |
+| CTW13 | Erro no cadastro com nome em branco (*Bug Conhecido*) | 1. Inserir apenas espaços no nome.<br>2. Enviar. | **Falha Esperada:** Backend aceita espaços (retorna 201). O teste falha pois esperava erro na UI. |
 
 ---
 
@@ -33,6 +35,7 @@ Os testes estão divididos em três grupos principais para facilitar a manutenç
 | CTW06 | Listagem inicial de mesas | 1. Realizar login.<br>2. Verificar o título "Painel de reservas". | A interface lista exatamente 20 mesas (cards `.desk-item`). |
 | CTW07 | Criar reserva com sucesso (Dados Dinâmicos) | 1. Selecionar uma data no futuro (+5 a 15 dias).<br>2. Escolher uma mesa aleatória.<br>3. Preencher horários (09:00 - 12:00) e salvar. | Exibe mensagem de sucesso e atualiza o card da mesa no grid para "Reservada no dia" com os horários. |
 | CTW08 | Validar regra de negócio na UI (Duração) | 1. Selecionar mesa e data.<br>2. Preencher horários com duração de 10 horas (ex: 08:00 - 18:00).<br>3. Clicar em Reservar. | A API rejeita a requisição e a UI exibe `.feedback.error` sobre limite de 9 horas. |
+| CTW14 | Criar reserva no passado (*Bug Conhecido*) | 1. Escolher uma data anterior a hoje.<br>2. Preencher os horários e reservar. | **Falha Esperada:** A API aceita a data passada (retorna 201). O teste falha pois exige que a UI mostre uma mensagem de erro. |
 
 ---
 
