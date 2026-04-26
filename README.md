@@ -1,4 +1,4 @@
-# DeskHub QA Playground
+# DeskHub QA
 
 Aplicacao web full stack para reserva de mesas em escritorios, desenvolvida como base de estudos para QA manual, QA automatizado, automacao funcional e testes de performance.
 
